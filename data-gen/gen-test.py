@@ -78,7 +78,6 @@ def generate_checkout_event(user_id, products):
     user_agent = fake.user_agent()
     ip_address = fake.ipv4()
     datetime_occured = datetime.now()
-    bill_id = str(uuid4())
 
     for product in products:
         checkout_event = {
@@ -90,7 +89,6 @@ def generate_checkout_event(user_id, products):
             "num_product": str(len(products)),
             "shipping_address": shipping_address,
             "billing_address": billing_address,
-            "bill_id": bill_id,
             "user_agent": user_agent,
             "ip_address": ip_address,
             "datetime_occured": datetime_occured.strftime("%Y-%m-%d %H:%M:%S")
