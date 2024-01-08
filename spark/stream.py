@@ -69,7 +69,7 @@ df = df.select(from_json('value', schema).alias('value'))
 
 # query.awaitTermination()
 
-print(df.schema)
+# print(df.schema)
 
 def save_data(df, batch_id):
     data = df.collect()

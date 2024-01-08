@@ -12,7 +12,7 @@ Lưu trữ và xử lý dữ liệu chứng khoán với dữ liệu được th
 
 ## Dữ liệu được lưu trong Cassandra
 
-![du lieu trong cassandra](./imgs/Untitled%201.png)
+![du lieu trong cassandra](![Alt text](image.png))
 
 ## Spark
 
@@ -73,7 +73,7 @@ Lưu trữ và xử lý dữ liệu chứng khoán với dữ liệu được th
    >
    > docker exec -it spark-master bash
    >
-   >spark/bin/spark-submit --conf spark.cassandra.connection.host=172.23.0.11 --packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0 --conf spark.cassandra.auth.username=cassandra --conf spark.cassandra.auth.password=cassandra --master spark-master:7077 home/spark.py
+   >spark/bin/spark-submit --conf spark.cassandra.connection.host=casandra --packages com.datastax.spark:spark-cassandra-connector_2.12:3.3.0 --conf spark.cassandra.auth.username=cassandra --conf spark.cassandra.auth.password=cassandra --master spark-master:7077 home/hdfs_to_cassandra_review.py
 
    Truyen argv vao -- argv[1] + argv[2]: statistic + date (format yyyy-mm-dd) / history + ticker 
    > spark/bin/spark-submit --conf spark.cassandra.connection.host=172.23.0.12 --packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0 --conf spark.cassandra.auth.username=cassandra --conf spark.cassandra.auth.password=cassandra --master spark-master:7077 home/analyzer.py
