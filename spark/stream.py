@@ -1,11 +1,12 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
-    date_trunc, col, split, decode, from_json, to_json
+    col, from_json
 )
 from elasticsearch import Elasticsearch
 
 from pyspark.sql.types import *
 # fix version 2.12:3.3.1  (3.3.1 is version spark)
+
 spark = SparkSession.builder\
     .config("spak.app.name", "StreamStock")\
     .config("spark.master", "local[*]")\
@@ -16,12 +17,6 @@ spark = SparkSession.builder\
     .config("es.index.auto.create", "true")\
     .enableHiveSupport()\
     .getOrCreate()
-
-schema = StructType([
-    StructField("review_id", StringType(), True),
-    StructField("user_id", StringType(), True),
-    StructField("product_id", StringType(), True)
-])
 
 spark.sparkContext.setLogLevel("WARN")
 es = Elasticsearch(hosts='http://elasticsearch:9200')
@@ -45,32 +40,29 @@ schema = StructType([
     StructField("datetime_occured", StringType(), True)
 ])
 
-# df.selectExpr("CAST(value AS STRING)").writeStream \
-#     .format("console") \
-#     .outputMode("append") \
-#     .start() \
-#     .awaitTermination()
+# print data to console
 
 df = df.selectExpr("CAST(value AS STRING)")
 df = df.select(from_json('value', schema).alias('value'))
 
-# query = df.select(
-#     col("json.checkout_id"),
-#     col("json.user_id"),
-#     col("json.product_id"),
-#     col("json.price"),
-#     col("json.payment_method"),
-#     col("json.num_product"),
-#     col("json.datetime_occured")
-# ).writeStream \
-#     .format("console") \
-#     .outputMode("append") \
-#     .start()
+query = df.select(
+    col("value.checkout_id"),
+    col("value.user_id"),
+    col("value.product_id"),
+    col("value.price"),
+    col("value.payment_method"),
+    col("value.num_product"),
+    col("value.datetime_occured")
+).writeStream \
+    .format("console") \
+    .outputMode("append") \
+    .start()
 
-# query.awaitTermination()
+query.awaitTermination()
 
-# print(df.schema)
+print(df.schema)
 
+# save data to elasticsearch
 def save_data(df, batch_id):
     data = df.collect()
     index = 0
@@ -90,4 +82,3 @@ def save_data(df, batch_id):
 
 
 df.writeStream.foreachBatch(save_data).start().awaitTermination()
-
