@@ -4,7 +4,6 @@ Status: Not started
 
 ## Bài toán:
 
-Lưu trữ và xử lý dữ liệu chứng khoán với dữ liệu được thu thập từ API của Công ty Cổ phần Chứng khoán Kỹ Thương (Techcom Securities – TCBS), là công ty con của Ngân hàng TMCP Kỹ Thương Việt Nam Techcombank.
 
 ## Kiến trúc hệ thống
 
